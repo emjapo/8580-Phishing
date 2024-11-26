@@ -14,8 +14,11 @@ yahoo_data = pd.read_csv(file_path)
 # Drop the column that has "this one has code" in it
 yahoo_data_cleaned = yahoo_data.drop(columns=["Unnamed: 4"])
 
-# remove the enron ones
+# Remove the enron ones
 yahoo_data_cleaned = yahoo_data_cleaned[yahoo_data_cleaned["LLM"] != "Enron"]
+
+# Insert only the specified LLM
+yahoo_data_cleaned = yahoo_data_cleaned[yahoo_data_cleaned["LLM"] == "LlaMa"]
 
 # Encode "Detected?" column (categorical to numeric: "no" -> 0, "yes" -> 1)
 yahoo_data_cleaned["Detected?"] = yahoo_data_cleaned["Detected?"].map(
@@ -27,7 +30,7 @@ yahoo_data_cleaned = yahoo_data_cleaned.dropna(subset=["Subject", "Email", "Dete
 yahoo_data = yahoo_data_cleaned
 
 # Sample data (replace with your own data)
-texts = yahoo_data["Email"]
+texts = yahoo_data["Subject"] + " " + yahoo_data["Email"]
 labels = yahoo_data["Detected?"].astype(int)
 
 
@@ -50,7 +53,7 @@ param_grid = {
     "criterion": ["gini", "entropy"],
     "max_depth": [None, 10, 15, 20, 25, 30],
     "min_samples_split": [3, 8, 15],
-    "min_samples_leaf": [1, 2, 3, 4, 5],
+    "min_samples_leaf": [1, 2, 5],
     "class_weight": [None, "balanced"],
 }
 
