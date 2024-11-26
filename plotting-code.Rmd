@@ -73,3 +73,43 @@ distribution_plot_yahoo
 
 ```
 
+```{r}
+
+yahoo_data <- data.frame(
+  Pi_inbox = 35,
+  Pi_spam = 80,
+  Llama_inbox = 35,
+  Llama_spam = 92,
+  ChatGPT_inbox = 30,
+  ChatGPT_spam = 36,
+  Enron_inbox = 48,
+  Enron_spam = 45
+)
+
+outlook_data <- data.frame(
+  Pi_inbox = 3,
+  Pi_spam = 115,
+  Llama_inbox = 4,
+  Llama_spam = 122,
+  ChatGPT_inbox = 2,
+  ChatGPT_spam = 70,
+  Enron_inbox = 59,
+  Enron_spam = 37
+)
+
+combined_df <- full_join(outlook_data, yahoo_data, by = intersect(names(outlook_data), names(yahoo_data))) %>%
+  summarise(across(everything(), sum, na.rm = TRUE))
+
+print(combined_df)
+
+data_with_percentage <- combined_df %>%
+  mutate(
+    Pi_spam_percentage = Pi_spam / (Pi_spam + Pi_inbox) * 100,
+    Llama_spam_percentage = Llama_spam / (Llama_spam + Llama_inbox) * 100,
+    ChatGPT_spam_percentage = ChatGPT_spam / (ChatGPT_spam + ChatGPT_inbox) * 100,
+    Enron_spam_percentage = Enron_spam / (Enron_spam + Enron_inbox) * 100
+  )
+
+print(data_with_percentage)
+```
+
