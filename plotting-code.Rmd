@@ -33,11 +33,43 @@ distribution_plot <- outlook_data %>%
   ggplot(aes(x = Category, y = Count, fill = Category)) +
   geom_bar(stat = "identity") +
   theme_minimal() +
+  ylim(0, 125)+
   scale_fill_brewer(palette = "Paired") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(title = "Inbox and Spam Counts by LLM", x = "LLM and Class", y = "Count")
+  labs(title = "Outlook Inbox and Spam Counts by LLM", x = "LLM and Class", y = "Count")
 
 distribution_plot
+
+```
+
+
+```{r yahoo-plots}
+
+yahoo_data <- data.frame(
+  Pi_inbox = 35,
+  Pi_spam = 80,
+  Llama_inbox = 35,
+  Llama_spam = 92,
+  ChatGPT_inbox = 30,
+  ChatGPT_spam = 36,
+  Enron_Inbox = 48,
+  Enron_spam = 45
+)
+
+yahoo_data <- melt(yahoo_data, variable.name = "Category", value.name = "Count")
+
+print(yahoo_data)
+
+distribution_plot_yahoo <- yahoo_data %>%
+  ggplot(aes(x = Category, y = Count, fill = Category)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  ylim(0, 125)+
+  scale_fill_brewer(palette = "Paired") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Yahoo Inbox and Spam Counts by LLM", x = "LLM and Class", y = "Count")
+
+distribution_plot_yahoo
 
 ```
 
