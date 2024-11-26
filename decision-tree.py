@@ -16,6 +16,9 @@ yahoo_data = pd.read_csv(file_path)
 # Drop the column that has "this one has code" in it
 yahoo_data_cleaned = yahoo_data.drop(columns=["Unnamed: 4"])
 
+# remove the enron ones
+yahoo_data_cleaned = yahoo_data_cleaned[yahoo_data_cleaned["LLM"] != "Enron"]
+
 # Encode "Detected?" column (categorical to numeric: "no" -> 0, "yes" -> 1)
 yahoo_data_cleaned["Detected?"] = yahoo_data_cleaned["Detected?"].map(
     {"no": 0, "yes": 1}
@@ -47,13 +50,10 @@ X_train, X_test, y_train, y_test = train_test_split(
 # Use a parameter grid to train specified criteria
 param_grid = {
     "criterion": ["gini", "entropy"],
-    "splitter": ["best", "random"],
     "max_depth": [None, 5, 10, 15, 20],
     "min_samples_split": [2, 5, 10],
     "min_samples_leaf": [1, 2, 5],
     "class_weight": [None, "balanced"],
-    "max_features": [None, "sqrt", "log2"],
-    "ccp_alpha": [0.0, 0.01, 0.05, 0.1],
 }
 
 # Create the DecisionTreeClassifier
